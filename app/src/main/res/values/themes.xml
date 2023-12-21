@@ -1,0 +1,34 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <!-- Customize your theme here. -->
+    </style>
+
+    <!-- Theme for the first page with full-screen and emojis. -->
+    <style name="EmojiTheme" parent="AppTheme">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:windowContentOverlay">@null</item>
+    </style>
+
+    <!-- Theme for the second page with QR code and a 'Done' button. -->
+    <style name="QRCodeTheme" parent="AppTheme">
+        <item name="android:windowBackground">@color/white</item>
+        <!-- If you want to hide the action bar for this page too, uncomment the next line -->
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:buttonStyle">@style/DoneButtonStyle</item>
+    </style>
+
+    <!-- Style for the 'Done' button on the second page. -->
+    <style name="DoneButtonStyle" parent="Widget.MaterialComponents.Button">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:backgroundTint">@color/colorAccent</item>
+    </style>
+
+</resources>
