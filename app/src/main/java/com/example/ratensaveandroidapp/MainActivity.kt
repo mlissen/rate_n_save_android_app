@@ -8,7 +8,6 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.ratensaveandroidapp.viewmodel.CouponViewModel
 import java.util.*
 import android.util.Log
-import com.example.ratensaveandroidapp.R
 
 class MainActivity : AppCompatActivity() {
     private lateinit var emojis: Array<ImageView>
@@ -44,7 +43,7 @@ class MainActivity : AppCompatActivity() {
         viewModel.couponResponse.observe(this, { response ->
             Log.d("MainActivity", "LiveData observed: $response")
             response?.let {
-                navigateToQRCodeScreen(it.couponID)
+                navigateToQRCodeScreen(it.coupon_id)
             } ?: run {
                 Log.d("MainActivity", "No response received in LiveData")
             }
