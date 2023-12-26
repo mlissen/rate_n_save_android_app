@@ -40,14 +40,14 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun observeViewModel() {
-        viewModel.couponResponse.observe(this, { response ->
+        viewModel.couponResponse.observe(this) { response ->
             Log.d("MainActivity", "LiveData observed: $response")
             response?.let {
                 navigateToQRCodeScreen(it.coupon_id)
             } ?: run {
                 Log.d("MainActivity", "No response received in LiveData")
             }
-        })
+        }
     }
 
     private fun navigateToQRCodeScreen(couponId: String) {
