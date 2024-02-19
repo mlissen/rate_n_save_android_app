@@ -6,7 +6,7 @@ import com.example.ratensaveandroidapp.network.ApiClient
 import com.example.ratensaveandroidapp.network.ApiService
 
 class CouponCodeRepository {
-    private val apiService: ApiService = ApiClient.retrofit.create(ApiService::class.java)
+    private val apiService: ApiService = ApiClient.ratingRetrofit.create(ApiService::class.java)
 
     suspend fun submitRating(ratingRequest: RatingRequest): CouponResponse {
         // Make a network call using the ApiClient and return the response

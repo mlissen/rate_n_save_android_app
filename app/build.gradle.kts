@@ -50,6 +50,8 @@ android {
 }
 
 dependencies {
+    implementation ("com.squareup.okhttp3:logging-interceptor:4.9.0")
+    implementation("androidx.security:security-crypto:1.1.0-alpha03") // Or the latest stable version
     implementation(libs.material.components)
     implementation(libs.zxing)
     implementation(libs.appcompatactivity)
@@ -71,5 +73,5 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
-
+    implementation("androidx.security:security-crypto:1.1.0-alpha03")
 }

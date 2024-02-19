@@ -9,7 +9,7 @@ import com.example.ratensaveandroidapp.viewmodel.CouponViewModel
 import java.util.*
 import android.util.Log
 
-class MainActivity : AppCompatActivity() {
+class SampleStationAd : AppCompatActivity() {
     private lateinit var emojis: Array<ImageView>
     private lateinit var viewModel: CouponViewModel
 
@@ -17,7 +17,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main) // Set the layout for this activity
 
-        viewModel = ViewModelProvider(this@MainActivity).get(CouponViewModel::class.java)
+        viewModel = ViewModelProvider(this).get(CouponViewModel::class.java)
 
         emojis = arrayOf(
             findViewById(R.id.emoji1),
