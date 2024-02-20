@@ -1,45 +1,72 @@
 package com.example.ratensaveandroidapp
-import android.content.Intent
+
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.content.Intent
+import android.view.View
+import android.view.ViewGroup
+import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
+import com.bumptech.glide.Glide
+import com.example.ratensaveandroidapp.datamodel.AdResponse
 import com.example.ratensaveandroidapp.viewmodel.AuctionViewModel
-import java.util.*
-import android.widget.Button
+import com.example.ratensaveandroidapp.MidAisleMediumActivity
 import android.widget.TextView
-import com.example.ratensaveandroidapp.R
-
-
 import android.util.Log
 
+
 class HomeActivity : AppCompatActivity() {
-    private lateinit var viewModel: AuctionViewModel // Assuming your ViewModel is called AuctionViewModel
+    private lateinit var viewModel: AuctionViewModel
+    private val handler = Handler(Looper.getMainLooper())
+    private lateinit var auctionRunnable: Runnable
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.home_screen) // Layout with the "Start Advertising" button
+        setContentView(R.layout.home_screen)
 
         viewModel = ViewModelProvider(this).get(AuctionViewModel::class.java)
 
+        // Initialize the button and set an OnClickListener
         findViewById<Button>(R.id.btnStartAdvertising).setOnClickListener {
-            // Trigger API call to get adID
-            val placementId = "d1a911b8-4f98-4ba8-9a44-c5fc5a953f0c"
-            viewModel.startAdvertising(placementId)
+            // Trigger the advertising process
+            startAdvertising()
         }
 
-        // Observe the LiveData from the ViewModel for adID response
-        viewModel.auctionResponse.observe(this) { auctionResponse ->
-            // Display the received adID in the TextView
-            val adIdTextView = findViewById<TextView>(R.id.tvAdId)
-            adIdTextView.text = "Ad ID: ${auctionResponse.ad_id}"
-
-            // Handle different ad types based on adID
-            // when (adResponse.adType) {
-            //   "samplingwfeedback" -> launchSamplingStationAd(adResponse.adID)
-            // Add cases for other ad types as necessary
-            //  }
+        // Observe the LiveData in your ViewModel for AdResponse
+        viewModel.adResponse.observe(this) { adResponse ->
+            navigateToAdActivity(adResponse.placementTypeId, adResponse)
         }
     }
-}
 
-    // Additional methods to handle other ad types...
+    private fun startAdvertising() {
+        // Hardcoded placementId for demonstration purposes
+        val placementId = "d1a911b8-4f98-4ba8-9a44-c5fc5a953f0c"
+        viewModel.startAdvertising(placementId)
+        Log.d("HomeActivity", "Advertising started for placement ID: $placementId")
+    }
+
+    private fun navigateToAdActivity(placementTypeId: Int, adResponse: AdResponse) {
+        Log.d("HomeActivity", "Attempting to navigate with placementTypeId: $placementTypeId")
+        val intent = when (placementTypeId) {
+            1 -> {
+                Log.d("HomeActivity", "Navigating to MidAisleMediumActivity")
+                Intent(this, MidAisleMediumActivity::class.java)
+            }
+            else -> {
+                Log.d("HomeActivity", "No matching placementTypeId found")
+                return // Or navigate to a default activity
+            }
+        }
+
+        intent.putExtra("adResponse", adResponse)
+        startActivity(intent)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        handler.removeCallbacks(auctionRunnable) // Prevent memory leaks
+    }
+
+}

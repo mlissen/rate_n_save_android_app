@@ -20,5 +20,12 @@
         android:textSize="18sp"
         android:textStyle="bold" />
 
+    <FrameLayout
+        android:visibility="gone"
+        android:id="@+id/adContainer"
+        android:layout_width="395dp"
+        android:layout_height="701dp"
+        android:layout_below="@id/btnStartAdvertising"
+        android:layout_marginTop="-375dp" />
 
 </RelativeLayout>
