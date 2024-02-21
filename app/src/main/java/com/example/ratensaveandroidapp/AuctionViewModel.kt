@@ -19,7 +19,7 @@ class AuctionViewModel : ViewModel() {
     private val _adResponse = MutableLiveData<AdResponse>()
     val adResponse: LiveData<AdResponse> = _adResponse
 
-    fun startAdvertising(placementId: String) {
+    fun startAuction(placementId: String) {
         viewModelScope.launch(Dispatchers.IO) {
             Log.d("AuctionViewModel", "About to initiate auction call with placementId: $placementId")
             try {

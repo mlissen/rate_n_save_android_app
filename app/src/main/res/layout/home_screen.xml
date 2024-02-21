@@ -5,10 +5,10 @@
     android:padding="16dp">
 
     <Button
-        android:id="@+id/btnStartAdvertising"
+        android:id="@+id/btnStartAuction"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Start Advertising"
+        android:text="Start Auction"
         android:layout_centerInParent="true" />
 
     <TextView
@@ -25,7 +25,7 @@
         android:id="@+id/adContainer"
         android:layout_width="395dp"
         android:layout_height="701dp"
-        android:layout_below="@id/btnStartAdvertising"
+        android:layout_below="@id/btnStartAuction"
         android:layout_marginTop="-375dp" />
 
 </RelativeLayout>

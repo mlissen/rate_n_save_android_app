@@ -20,7 +20,6 @@ import android.util.Log
 class HomeActivity : AppCompatActivity() {
     private lateinit var viewModel: AuctionViewModel
     private val handler = Handler(Looper.getMainLooper())
-    private lateinit var auctionRunnable: Runnable
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,9 +28,9 @@ class HomeActivity : AppCompatActivity() {
         viewModel = ViewModelProvider(this).get(AuctionViewModel::class.java)
 
         // Initialize the button and set an OnClickListener
-        findViewById<Button>(R.id.btnStartAdvertising).setOnClickListener {
+        findViewById<Button>(R.id.btnStartAuction).setOnClickListener {
             // Trigger the advertising process
-            startAdvertising()
+            startAuction()
         }
 
         // Observe the LiveData in your ViewModel for AdResponse
@@ -40,10 +39,10 @@ class HomeActivity : AppCompatActivity() {
         }
     }
 
-    private fun startAdvertising() {
+    private fun startAuction() {
         // Hardcoded placementId for demonstration purposes
         val placementId = "d1a911b8-4f98-4ba8-9a44-c5fc5a953f0c"
-        viewModel.startAdvertising(placementId)
+        viewModel.startAuction(placementId)
         Log.d("HomeActivity", "Advertising started for placement ID: $placementId")
     }
 
@@ -62,11 +61,6 @@ class HomeActivity : AppCompatActivity() {
 
         intent.putExtra("adResponse", adResponse)
         startActivity(intent)
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        handler.removeCallbacks(auctionRunnable) // Prevent memory leaks
     }
 
 }

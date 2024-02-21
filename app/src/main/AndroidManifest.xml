@@ -36,6 +36,9 @@
             android:exported="false">
             <!-- No intent-filter needed unless this is an entry point to the app -->
         </activity>
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
 
     </application>
 

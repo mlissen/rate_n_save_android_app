@@ -4,7 +4,8 @@ import android.animation.PropertyValuesHolder
 import android.os.Bundle
 import android.widget.ImageView
 import android.widget.TextView
-import android.view.View
+import android.view.Window
+import android.widget.Button
 import android.view.WindowInsets
 import android.view.WindowInsetsController
 import androidx.appcompat.app.AppCompatActivity
@@ -20,17 +21,18 @@ import android.os.Build
 import android.view.animation.AccelerateDecelerateInterpolator
 import androidx.annotation.RequiresApi
 import android.content.Intent
-import android.os.Handler
-import android.os.Looper
+import android.os.CountDownTimer
+import android.widget.ProgressBar
 import androidx.lifecycle.ViewModelProvider
-import com.example.ratensaveandroidapp.viewmodel.AuctionViewModel
 
-class MidAisleMediumActivity : AppCompatActivity() {
+class MidAisleMediumActivityWCountdown : AppCompatActivity() {
 
     private lateinit var qrCodeImageView: ImageView
     private lateinit var binding: MidAisleMediumLayoutBinding
-    private val handler = Handler(Looper.getMainLooper())
-    private lateinit var viewModel: AuctionViewModel
+    private lateinit var countdownTimer: CountDownTimer
+    private lateinit var timerTextView: TextView
+    private lateinit var auctionProgressBar: ProgressBar
+
 
     @RequiresApi(Build.VERSION_CODES.R)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,103 +40,71 @@ class MidAisleMediumActivity : AppCompatActivity() {
         binding = MidAisleMediumLayoutBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        viewModel = ViewModelProvider(this).get(AuctionViewModel::class.java)
+        // Initialize qrCodeImageView, timerTextView, and auctionProgressBar right after setContentView
+        timerTextView = binding.timerTextView // Ensure you have a timerTextView defined in your layout XML and binding class
+        auctionProgressBar = binding.auctionProgressBar // Ensure you have an auctionProgressBar defined in your layout XML and binding class
 
         qrCodeImageView = binding.qrCodeImageView
-        processAdResponse()
-
-        hideSystemUI()
-
-        binding.exitButton.setOnClickListener {
-            // Exiting Kiosk Mode and navigating back to HomeActivity
-            showSystemUI()
-            navigateToHomeActivity()
-        }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        handler.removeCallbacksAndMessages(null) // Cancel all scheduled Runnable tasks
-    }
-
-    private fun hideSystemUI() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            window.insetsController?.apply {
-                systemBarsBehavior = WindowInsetsController.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
-                hide(WindowInsets.Type.systemBars())
-            }
-        } else {
-            // Use older APIs for Android versions before R
-            @Suppress("DEPRECATION")
-            window.decorView.systemUiVisibility = (View.SYSTEM_UI_FLAG_FULLSCREEN
-                    or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                    or View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY)
-        }
-    }
-
-    private fun showSystemUI() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            window.insetsController?.show(WindowInsets.Type.systemBars())
-        } else {
-            // Use older APIs for Android versions before R
-            @Suppress("DEPRECATION")
-            window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_VISIBLE
-        }
-    }
-
-    private fun processAdResponse() {
         val adResponse = intent.getSerializableExtra("adResponse") as? AdResponse
         adResponse?.let {
             updateUIWithAdResponse(it)
-            it.minutesToNextAuction?.let { minutesToAuction ->
-                if (minutesToAuction > 0) {
-                    scheduleNextAuction(minutesToAuction)
-                } else {
-                    navigateToHomeActivity()
-                }
+            // Now inside the 'let' block:
+            val minutesToAuction = it.minutesToNextAuction // Get the value
+            if (minutesToAuction != null) {
+                startCountdownTimer(minutesToAuction)
+            } else {
+                // Handle the scenario where minutes_to_next_auction is not available
+                val intent = Intent(this, HomeActivity::class.java)
+                startActivity(intent)  // Navigate back to HomeActivity
             }
-        } ?: run {
-            Log.e("MidAisleMediumActivity", "AdResponse is missing")
-            navigateToHomeActivity()
         }
-    }
-    private fun scheduleNextAuction(minutesToNextAuction: Int?) {
-        minutesToNextAuction?.let {
-            val delayMillis = it * 60 * 1000L
-            handler.postDelayed({
-                startNextAuction()
-            }, delayMillis)
-        } ?: run {
-            Log.e("MidAisleMediumActivity", "Minutes to next auction is null")
-            navigateToHomeActivity()
+        hideSystemUI()
+
+
+        val exitButton = findViewById<Button>(R.id.exitButton)
+        exitButton.setOnClickListener {
+            // Code to exit Kiosk Mode and restore system UI
+            //finish() // Example action to leave the activity. Adjust as needed.
+            val intent = Intent(this, HomeActivity::class.java)
+            startActivity(intent)
+
         }
     }
 
-    private fun startNextAuction() {
-        val placementId = "d1a911b8-4f98-4ba8-9a44-c5fc5a953f0c"
-        Log.d("MidAisleMediumActivity", "Starting next auction with placement ID: $placementId")
-        viewModel.startAuction(placementId)// Replace with actual logic to start the next auction
-        viewModel.adResponse.observe(this) { adResponse ->
-            updateUIWithAdResponse(adResponse)
-            // Optionally reset the timer based on the new adResponse.minutesToNextAuction
-            adResponse.minutesToNextAuction?.let {
-                if (it > 0) {
-                    scheduleNextAuction(it)
-                } else {
-                    navigateToHomeActivity()
-                }
-            }
+    @RequiresApi(Build.VERSION_CODES.R)
+    private fun hideSystemUI() {
+        window.insetsController?.let {
+            it.systemBarsBehavior = WindowInsetsController.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+            it.hide(WindowInsets.Type.systemBars())
         }
     }
 
-    private fun navigateToHomeActivity() {
-        val intent = Intent(this, HomeActivity::class.java)
-        startActivity(intent)
-        finish() // Exit this activity to return to HomeActivity
+    private fun startCountdownTimer(minutesToAuction: Int) {
+        Log.d("MidAisleActivity", "Starting countdown timer for $minutesToAuction minutes.")
+        val timeUntilAuction = minutesToAuction * 60 * 1000 // Convert minutes to milliseconds
+
+        val countDownTimer = object : CountDownTimer(timeUntilAuction.toLong(), 1000) {
+            override fun onTick(millisUntilFinished: Long) {
+                val secondsRemaining = millisUntilFinished / 1000
+                val minutes = secondsRemaining / 60
+                val seconds = secondsRemaining % 60
+
+                val timeFormatted = String.format("%02d:%02d", minutes, seconds)
+                Log.d("MidAisleActivity", "Time left: $timeFormatted")
+                timerTextView.text = timeFormatted
+
+                // Calculate percentage for progress bar
+                val progress = (timeUntilAuction - millisUntilFinished) * 100 / timeUntilAuction
+                auctionProgressBar.progress = progress.toInt()
+            }
+
+            override fun onFinish() {
+                timerTextView.text = "Auction Starting!" // Or your desired action
+            }
+        }.start()
     }
 
     private fun updateUIWithAdResponse(adResponse: AdResponse) {
-        Log.d("MidAisleMediumActivity", "Updating UI with new ad response: $adResponse")
         Glide.with(this).load(adResponse.gifUrl).into(binding.adGifImageView)
         binding.couponHeaderTextView.text = adResponse.couponTextHeader
         binding.couponOfferTextView.text = adResponse.couponTextOffer
