@@ -1,31 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp">
+    android:orientation="vertical"
+    android:gravity="center">
 
-    <Button
-        android:id="@+id/btnStartAuction"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Start Auction"
-        android:layout_centerInParent="true" />
+        android:orientation="vertical"
+        android:padding="16dp"
+        android:gravity="center">
 
-    <TextView
-        android:id="@+id/tvAdId"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
-        android:textSize="18sp"
-        android:textStyle="bold" />
+        <EditText
+            android:id="@+id/etPlacementId"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter Placement ID"
+            android:inputType="text"
+            android:layout_marginBottom="16dp"
+            android:gravity="center"/>
 
-    <FrameLayout
-        android:visibility="gone"
-        android:id="@+id/adContainer"
-        android:layout_width="395dp"
-        android:layout_height="701dp"
-        android:layout_below="@id/btnStartAuction"
-        android:layout_marginTop="-375dp" />
+        <Button
+            android:id="@+id/btnActivatePlacement"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Activate Placement" />
 
-</RelativeLayout>
+    </LinearLayout>
+
+</LinearLayout>

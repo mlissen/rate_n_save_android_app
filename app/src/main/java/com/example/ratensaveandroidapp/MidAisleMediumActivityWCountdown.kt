@@ -1,10 +1,9 @@
-package com.example.ratensaveandroidapp
+/*package com.example.ratensaveandroidapp
 
 import android.animation.PropertyValuesHolder
 import android.os.Bundle
 import android.widget.ImageView
 import android.widget.TextView
-import android.view.Window
 import android.widget.Button
 import android.view.WindowInsets
 import android.view.WindowInsetsController
@@ -23,7 +22,6 @@ import androidx.annotation.RequiresApi
 import android.content.Intent
 import android.os.CountDownTimer
 import android.widget.ProgressBar
-import androidx.lifecycle.ViewModelProvider
 
 class MidAisleMediumActivityWCountdown : AppCompatActivity() {
 
@@ -42,7 +40,7 @@ class MidAisleMediumActivityWCountdown : AppCompatActivity() {
 
         // Initialize qrCodeImageView, timerTextView, and auctionProgressBar right after setContentView
         timerTextView = binding.timerTextView // Ensure you have a timerTextView defined in your layout XML and binding class
-        auctionProgressBar = binding.auctionProgressBar // Ensure you have an auctionProgressBar defined in your layout XML and binding class
+ // Ensure you have an auctionProgressBar defined in your layout XML and binding class
 
         qrCodeImageView = binding.qrCodeImageView
         val adResponse = intent.getSerializableExtra("adResponse") as? AdResponse
@@ -105,7 +103,7 @@ class MidAisleMediumActivityWCountdown : AppCompatActivity() {
     }
 
     private fun updateUIWithAdResponse(adResponse: AdResponse) {
-        Glide.with(this).load(adResponse.gifUrl).into(binding.adGifImageView)
+        Glide.with(this).load(adResponse.creativeUrl).into(binding.adGifImageView)
         binding.couponHeaderTextView.text = adResponse.couponTextHeader
         binding.couponOfferTextView.text = adResponse.couponTextOffer
         binding.couponFooterTextView.text = adResponse.couponTextFooter
@@ -170,3 +168,4 @@ class MidAisleMediumActivityWCountdown : AppCompatActivity() {
         animator.start() // Start the animation
     }
 }
+*/
