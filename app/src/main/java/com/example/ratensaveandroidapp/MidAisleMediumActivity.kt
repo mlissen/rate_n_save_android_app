@@ -1,29 +1,36 @@
 package com.example.ratensaveandroidapp
 
-import android.animation.PropertyValuesHolder
-import android.os.Bundle
-import android.widget.ImageView
-import android.widget.TextView
-import android.view.View
-import android.view.WindowInsets
-import android.view.WindowInsetsController
-import androidx.appcompat.app.AppCompatActivity
-import com.example.ratensaveandroidapp.databinding.MidAisleMediumLayoutBinding
-import com.bumptech.glide.Glide
-import com.example.ratensaveandroidapp.datamodel.AdResponse
-import com.example.ratensaveandroidapp.utils.QRCodeGenerator.generateQRCode
-import android.util.*
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.animation.ObjectAnimator
-import android.os.Build
-import android.view.animation.AccelerateDecelerateInterpolator
-import androidx.annotation.RequiresApi
+import android.animation.PropertyValuesHolder
+import android.content.Context
 import android.content.Intent
+import android.content.pm.ActivityInfo
+import android.net.Uri
+import android.os.Build
+import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.*
+import android.view.View
+import android.view.WindowInsets
+import android.view.WindowInsetsController
+import android.view.WindowManager
+import android.view.animation.AccelerateDecelerateInterpolator
+import android.widget.Button
+import android.widget.ImageView
+import android.widget.TextView
+import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
+import com.bumptech.glide.Glide
+import com.example.ratensaveandroidapp.databinding.MidAisleMediumLayoutBinding
+import com.example.ratensaveandroidapp.datamodel.AdResponse
+import com.example.ratensaveandroidapp.utils.QRCodeGenerator.generateQRCode
 import com.example.ratensaveandroidapp.viewmodel.AuctionViewModel
+import android.widget.VideoView
+
 
 class MidAisleMediumActivity : AppCompatActivity() {
 
@@ -31,25 +38,39 @@ class MidAisleMediumActivity : AppCompatActivity() {
     private lateinit var binding: MidAisleMediumLayoutBinding
     private val handler = Handler(Looper.getMainLooper())
     private lateinit var viewModel: AuctionViewModel
+    private var placementId: String? = null
 
     @RequiresApi(Build.VERSION_CODES.R)
     override fun onCreate(savedInstanceState: Bundle?) {
+        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
         super.onCreate(savedInstanceState)
         binding = MidAisleMediumLayoutBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        viewModel = ViewModelProvider(this).get(AuctionViewModel::class.java)
+        // Keep screen on
+        window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
 
-        qrCodeImageView = binding.qrCodeImageView
+        viewModel = ViewModelProvider(this).get(AuctionViewModel::class.java)
+        retrievePlacementId()
+
+        observeAdResponse() // Observe the LiveData here
+        //qrCodeImageView = binding.qrCodeImageView
         processAdResponse()
+
+        val backButton = findViewById<Button>(R.id.backButton)
+        backButton.setOnClickListener {
+            Log.d("MidAisleMediumActivity", "Back button clicked!")
+            navigateToHomeActivity()
+        }
+
 
         hideSystemUI()
 
-        binding.exitButton.setOnClickListener {
+        /*binding.exitButton.setOnClickListener {
             // Exiting Kiosk Mode and navigating back to HomeActivity
             showSystemUI()
             navigateToHomeActivity()
-        }
+        }*/
     }
 
     override fun onDestroy() {
@@ -71,7 +92,6 @@ class MidAisleMediumActivity : AppCompatActivity() {
                     or View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY)
         }
     }
-
     private fun showSystemUI() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             window.insetsController?.show(WindowInsets.Type.systemBars())
@@ -79,6 +99,36 @@ class MidAisleMediumActivity : AppCompatActivity() {
             // Use older APIs for Android versions before R
             @Suppress("DEPRECATION")
             window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_VISIBLE
+        }
+    }
+    private fun retrievePlacementId() {
+        val sharedPref = this.getSharedPreferences("MyPrefs", Context.MODE_PRIVATE)
+        placementId = sharedPref.getString("placementId", "")
+        if (placementId.isNullOrBlank()) {
+            Log.e("MidAisleMediumActivity", "No placement ID found")
+            // Handle the case where no placement ID is found, maybe navigate back or show a message
+        } else {
+            Log.d("MidAisleMediumActivity", "Retrieved Placement ID: $placementId")
+            // You can now use placementId for further operations, like starting an auction
+        }
+    }
+
+    private fun observeAdResponse() {
+        // This ensures you only add the observer once during the Activity lifecycle
+        viewModel.adResponse.observe(this) { adResponse ->
+            // Update UI with new AdResponse
+            updateUIWithAdResponse(adResponse)
+            // Decide what to do next based on minutesToNextAuction
+            adResponse.minutesToNextAuction?.let {
+                if (it > 0) {
+                    scheduleNextAuction(it)
+                } else {
+                    navigateToHomeActivity()
+                }
+            } ?: run {
+                Log.e("MidAisleMediumActivity", "minutesToNextAuction is null or not provided")
+                navigateToHomeActivity()
+            }
         }
     }
 
@@ -98,32 +148,35 @@ class MidAisleMediumActivity : AppCompatActivity() {
             navigateToHomeActivity()
         }
     }
-    private fun scheduleNextAuction(minutesToNextAuction: Int?) {
-        minutesToNextAuction?.let {
-            val delayMillis = it * 60 * 1000L
-            handler.postDelayed({
-                startNextAuction()
-            }, delayMillis)
-        } ?: run {
-            Log.e("MidAisleMediumActivity", "Minutes to next auction is null")
+
+    private fun scheduleNextAuction(minutesToNextAuction: Int) {
+        val delayMillis = minutesToNextAuction * 60 * 1000L
+        handler.postDelayed({
+            startNextAuction()
+        }, delayMillis)
+    }
+
+    // ...
+
+    private fun startNextAuction() {
+        val sharedPref = getSharedPreferences("AppSettings", Context.MODE_PRIVATE)
+        val placementId = sharedPref.getString("placementId", null) // Use a default value or handle null appropriately
+
+
+        if (placementId != null && placementId.isNotBlank()) { // Ensure ID exists
+            Log.d("MidAisleMediumActivity", "Scheduling next auction with placement ID: $placementId")
+            viewModel.startAuction(placementId)
+        } else {
+            Log.e("MidAisleMediumActivity", "No placement ID found, navigating back to HomeActivity")
             navigateToHomeActivity()
         }
     }
 
-    private fun startNextAuction() {
-        val placementId = "d1a911b8-4f98-4ba8-9a44-c5fc5a953f0c"
-        Log.d("MidAisleMediumActivity", "Starting next auction with placement ID: $placementId")
-        viewModel.startAuction(placementId)// Replace with actual logic to start the next auction
-        viewModel.adResponse.observe(this) { adResponse ->
-            updateUIWithAdResponse(adResponse)
-            // Optionally reset the timer based on the new adResponse.minutesToNextAuction
-            adResponse.minutesToNextAuction?.let {
-                if (it > 0) {
-                    scheduleNextAuction(it)
-                } else {
-                    navigateToHomeActivity()
-                }
-            }
+    private fun storePlacementId(placementId: String) {
+        val sharedPref = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE)
+        with(sharedPref.edit()) {
+            putString("placementId", placementId)
+            apply()
         }
     }
 
@@ -135,24 +188,58 @@ class MidAisleMediumActivity : AppCompatActivity() {
 
     private fun updateUIWithAdResponse(adResponse: AdResponse) {
         Log.d("MidAisleMediumActivity", "Updating UI with new ad response: $adResponse")
-        Glide.with(this).load(adResponse.gifUrl).into(binding.adGifImageView)
+
+        // Display QR code
+        /*adResponse.couponCode?.let {
+            try {
+                val qrCodeBitmap = generateQRCode(it)
+                binding.qrCodeImageView.setImageBitmap(qrCodeBitmap)            } catch (e: Exception) {
+                Log.e("MidAisleActivity", "Error generating QR code", e)
+            }
+        }*/
+
+        // Display offerCode directly
+        binding.offerCodeTextView.text = adResponse.couponCode
+        binding.offerCodeTextView.visibility = View.VISIBLE
+
+        // Display based on ad type
+        when (adResponse.adType) {
+            "VERTICAL_VIDEO" -> displayVideo(adResponse.creativeUrl)
+            "IMAGE", "GIF" -> displayImage(adResponse.creativeUrl)
+            else -> {
+                // Handle unsupported types or missing adType
+                binding.creativeImageView.visibility = View.GONE
+                binding.creativeVideoView.visibility = View.GONE
+            }
+        }
+
+        // Update text views
         binding.couponHeaderTextView.text = adResponse.couponTextHeader
         binding.couponOfferTextView.text = adResponse.couponTextOffer
         binding.couponFooterTextView.text = adResponse.couponTextFooter
-        val couponCode = adResponse.couponCode
-        if (couponCode != null) {
-            try {
-                val bitmap = generateQRCode(couponCode)
-                qrCodeImageView.setImageBitmap(bitmap)
-            } catch (e: Exception) {
-                Log.e("MidAisleActivity", "Error generating QR code", e)
-            }
-        } else {
-            Log.e("MidAisleActivity", "Coupon code is null, cannot generate QR code.")
-        }
 
-        // Animate the ctaTextView
+        // Animate the CTA text view
         jiggleTextView(binding.ctaTextView)
+    }
+
+    private fun displayImage(url: String) {
+        Glide.with(this)
+            .load(url)
+            .into(binding.creativeImageView)
+
+        binding.creativeImageView.visibility = View.VISIBLE
+        binding.creativeVideoView.visibility = View.GONE
+    }
+    private fun displayVideo(url: String) {
+        val videoView = binding.creativeVideoView as VideoView
+        val uri = Uri.parse(url)
+        videoView.setVideoURI(uri)
+        videoView.setOnPreparedListener { mp ->
+            mp.isLooping = true
+            videoView.start()
+        }
+        binding.creativeImageView.visibility = View.GONE
+        videoView.visibility = View.VISIBLE
     }
 
     private fun jiggleTextView(textView: TextView) {
@@ -199,4 +286,5 @@ class MidAisleMediumActivity : AppCompatActivity() {
 
         animator.start() // Start the animation
     }
+
 }
