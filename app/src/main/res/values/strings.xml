@@ -3,4 +3,6 @@
     <string name="app_name">Rate n Save</string>
     <string name="QR_code">Scan in the Costco app to automatically
         apply at purchase or take a picture to show at the register. </string>
+    <string name="title_activity_home">Home Screen</string>
+    <string name="cta_text">Mention Coupon Code at the register to redeem!</string>
 </resources>

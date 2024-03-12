@@ -38,6 +38,7 @@ android {
     }
     buildFeatures {
         compose = true
+        viewBinding = true
     }
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.1"
@@ -50,6 +51,11 @@ android {
 }
 
 dependencies {
+    implementation (libs.logging.interceptor)
+    implementation("androidx.security:security-crypto:1.1.0-alpha06") // Or the latest stable version
+    implementation ("com.github.bumptech.glide:glide:4.12.0")
+    annotationProcessor ("com.github.bumptech.glide:compiler:4.12.0")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1") // Or the latest version
     implementation(libs.material.components)
     implementation(libs.zxing)
     implementation(libs.appcompatactivity)
@@ -71,5 +77,5 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
-
+    implementation("androidx.security:security-crypto:1.1.0-alpha03")
 }

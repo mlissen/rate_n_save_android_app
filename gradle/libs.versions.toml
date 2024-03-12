@@ -5,14 +5,18 @@ coreKtx = "1.12.0"
 junit = "4.13.2"
 junitVersion = "1.1.5"
 espressoCore = "3.5.1"
+kotlinParcelize = "1.8.0"
 lifecycleRuntimeKtx = "2.6."
 activityCompose = "1.8.2"
 composeBom = "2023.10.01"
+loggingInterceptor = "4.9.0"
 retrofit = "2.9.0"  # Specify the Retrofit version
 gsonConverter = "2.9.0"  # Specify the Gson Converter version
 material-components = "1.4.0"
 
 [libraries]
+kotlin-parcelize = { module = "org.jetbrains.kotlin:kotlin-parcelize", version.ref = "kotlinParcelize" }
+logging-interceptor = { module = "com.squareup.okhttp3:logging-interceptor", version.ref = "loggingInterceptor" }
 zxing = "com.google.zxing:core:3.5.2"
 material-components = { module = "com.google.android.material:material", version.ref = "material-components" }
 lifecyclelivedataktx = "androidx.lifecycle:lifecycle-livedata-ktx:2.4.0"
@@ -37,4 +41,5 @@ androidx-material3 = { group = "androidx.compose.material3", name = "material3" 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
 jetbrainsKotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+
 
