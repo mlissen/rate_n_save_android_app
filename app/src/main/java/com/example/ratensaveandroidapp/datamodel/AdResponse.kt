@@ -10,4 +10,7 @@ class AdResponse(
     val minutesToNextAuction: Int,
     val placementTypeId: Int,
     val adType: String,
+    val storeOpenTime: String?,
+    val storeCloseTime: String?,
+    val nextOpeningTime: String?,
 ) : Serializable

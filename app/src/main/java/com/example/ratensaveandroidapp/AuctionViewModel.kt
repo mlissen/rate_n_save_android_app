@@ -27,6 +27,7 @@ class AuctionViewModel : ViewModel() {
                 val adResponse = repository.startAuction(auctionRequest)
                 _adResponse.postValue(adResponse)
                 Log.d("AuctionViewModel", "API response posted to LiveData, response: $adResponse") // Log success
+                Log.d("AuctionViewModel", "LISS creativeUrl: ${adResponse.creativeUrl}")
             } catch (e: Exception) {
                 Log.e("AuctionViewModel", "Error in startAuction, response not posted to LiveData", e) // Log error
                 // Optionally, you could post a failure response or a specific error message to LiveData here

@@ -1,11 +1,15 @@
 plugins {
-    alias(libs.plugins.androidApplication)
-    alias(libs.plugins.jetbrainsKotlinAndroid)
+    id("com.android.application") // Use 'id' to apply plugins
+    id("org.jetbrains.kotlin.android")
 }
 
 android {
     namespace = "com.example.ratensaveandroidapp"
     compileSdk = 34
+
+    compileOptions {
+        targetCompatibility = JavaVersion.VERSION_1_8
+    }
 
     defaultConfig {
         applicationId = "com.example.ratensaveandroidapp"
@@ -20,15 +24,11 @@ android {
         }
     }
 
+
     buildTypes {
-        release {
-            isMinifyEnabled = false
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
-            )
-        }
+
     }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
@@ -54,11 +54,15 @@ dependencies {
     implementation (libs.logging.interceptor)
     implementation("androidx.security:security-crypto:1.1.0-alpha06") // Or the latest stable version
     implementation ("com.github.bumptech.glide:glide:4.12.0")
+    implementation(libs.androidx.media3.common)
     annotationProcessor ("com.github.bumptech.glide:compiler:4.12.0")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1")
-    implementation("com.google.android.exoplayer:exoplayer-core:2.18.1") // Replace 2.X.X with the desired version
-    implementation("com.google.android.exoplayer:exoplayer-ui:2.18.1")// Or the latest version
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0")
+    implementation ("androidx.media3:media3-exoplayer:1.3.1")
+    implementation ("androidx.media3:media3-ui:1.3.1")
+    implementation ("androidx.media3:media3-exoplayer-dash:1.3.1")
     implementation(libs.material.components)
+    implementation ("androidx.dynamicanimation:dynamicanimation:1.0.0")
+    implementation ("androidx.window:window:1.0.0")
     implementation(libs.zxing)
     implementation(libs.appcompatactivity)
     implementation(libs.lifecyclelivedataktx)
@@ -80,4 +84,8 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
     implementation("androidx.security:security-crypto:1.1.0-alpha03")
+    implementation("androidx.appcompat:appcompat:1.6.1")
+    implementation("androidx.media3:media3-exoplayer:1.3.0")
+    implementation("androidx.media3:media3-ui:1.3.0")
+    implementation("androidx.media3:media3-exoplayer-dash:1.3.0")
 }

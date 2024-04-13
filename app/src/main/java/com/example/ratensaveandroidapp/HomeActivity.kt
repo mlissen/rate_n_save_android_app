@@ -16,11 +16,20 @@ class HomeActivity : AppCompatActivity() {
     private lateinit var etPlacementId: EditText
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
+
         setContentView(R.layout.home_screen)
+        etPlacementId = findViewById(R.id.etPlacementId)
         viewModel = ViewModelProvider(this).get(AuctionViewModel::class.java)
 
-        etPlacementId = findViewById(R.id.etPlacementId)
+        val sharedPref = getSharedPreferences("AppSettings", Context.MODE_PRIVATE)
+        val storedPlacementId = sharedPref.getString("placementId", null)
+
+        if (storedPlacementId != null) {
+            etPlacementId.setText(storedPlacementId)
+        }
+
 
         findViewById<Button>(R.id.btnActivatePlacement).setOnClickListener {
             val placementId = etPlacementId.text.toString()
@@ -57,14 +66,16 @@ class HomeActivity : AppCompatActivity() {
         val intent = when (placementTypeId ) {
             1,2 -> {
                 Log.d("HomeActivity", "Navigating to MidAisleMediumActivity")
-                Intent(this, MidAisleMediumActivity::class.java)
+                Intent(this, MidAisleMediumActivity::class.java).apply {
+                intent.putExtra("adResponse", adResponse)
+                putExtra("isInitialAd", true)
+            }
             }
             else -> {
                 Log.d("HomeActivity", "No matching placementTypeId found")
                 return // Or navigate to a default activity
             }
         }
-        intent.putExtra("adResponse", adResponse)
         startActivity(intent)
     }
 }
