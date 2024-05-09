@@ -1,16 +1,17 @@
 package com.example.ratensaveandroidapp.datamodel
 
 import java.io.Serializable
-class AdResponse(
+data class AdResponse(
     val creativeUrl: String,
-    val couponTextHeader: String,
-    val couponTextOffer: String,
-    val couponTextFooter: String,
-    val couponCode: String,
+    val fallbackLogo: Boolean,
     val minutesToNextAuction: Int,
     val placementTypeId: Int,
-    val adType: String,
-    val storeOpenTime: String?,
-    val storeCloseTime: String?,
-    val nextOpeningTime: String?,
+    val storeCloseTime: String,
+    val storeOpenTime: String,
+    val nextOpeningTime: String,
+    val couponCode: String? = null,
+    val couponTextHeader: String? = null,
+    val couponTextOffer: String? = null,
+    val couponTextFooter: String? = null,
+    val adType: String? = null
 ) : Serializable

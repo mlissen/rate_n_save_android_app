@@ -52,6 +52,7 @@ android {
 
 dependencies {
     implementation (libs.logging.interceptor)
+    implementation ("androidx.work:work-runtime-ktx:2.9.0")
     implementation("androidx.security:security-crypto:1.1.0-alpha06") // Or the latest stable version
     implementation ("com.github.bumptech.glide:glide:4.12.0")
     implementation(libs.androidx.media3.common)

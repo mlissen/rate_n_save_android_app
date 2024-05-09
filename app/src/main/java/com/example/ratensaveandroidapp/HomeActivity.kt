@@ -42,6 +42,7 @@ class HomeActivity : AppCompatActivity() {
         }
 
         viewModel.adResponse.observe(this) { adResponse ->
+            Log.d("HomeActivity", "Received adResponse from AuctionViewModel: $adResponse");
             navigateToAdActivity(adResponse.placementTypeId, adResponse)
         }
     }
@@ -61,18 +62,18 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun navigateToAdActivity(placementTypeId: Int, adResponse: AdResponse) {
-        Log.d("HomeActivity", "Attempting to navigate with placementTypeId: $placementTypeId")
-        Log.d("HomeActivity", "Attempting to navigate with AdResponse: $adResponse")
+        Log.d("HomeActivity", "LISS Attempting to navigate with placementTypeId: $placementTypeId")
+        Log.d("HomeActivity", "LISS Attempting to navigate with AdResponse: $adResponse")
         val intent = when (placementTypeId ) {
             1,2 -> {
-                Log.d("HomeActivity", "Navigating to MidAisleMediumActivity")
+                Log.d("HomeActivity", "LISS Navigating to MidAisleMediumActivity")
                 Intent(this, MidAisleMediumActivity::class.java).apply {
-                intent.putExtra("adResponse", adResponse)
-                putExtra("isInitialAd", true)
-            }
+                    putExtra("adResponse", adResponse)
+                    putExtra("isInitialAd", true)
+                }
             }
             else -> {
-                Log.d("HomeActivity", "No matching placementTypeId found")
+                Log.d("HomeActivity", "LISS No matching placementTypeId found")
                 return // Or navigate to a default activity
             }
         }
