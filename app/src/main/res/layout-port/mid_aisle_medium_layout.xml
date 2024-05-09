@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -38,52 +37,42 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.73" /> <!-- Adjust this percentage as needed -->
+        app:layout_constraintGuide_percent="0.73" />
 
     <Button
         android:id="@+id/backButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@null"
         android:alpha="0"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        android:background="@null"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <FrameLayout
-        android:id="@+id/creativeContainer"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintDimensionRatio="9:16"
-        app:layout_constraintTop_toTopOf="@id/topGuideline"
-        app:layout_constraintBottom_toTopOf="@id/gifBottomGuideline"
-        app:layout_constraintStart_toStartOf="@id/leftGuideline"
-        app:layout_constraintEnd_toEndOf="@id/rightGuideline">
+        <FrameLayout
+            android:id="@+id/creativeContainer"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintBottom_toTopOf="@id/gifBottomGuideline"
+            app:layout_constraintDimensionRatio="9:16"
+            app:layout_constraintEnd_toEndOf="@id/rightGuideline"
+            app:layout_constraintStart_toStartOf="@id/leftGuideline"
+            app:layout_constraintTop_toTopOf="@id/topGuideline">
 
-        <ImageView
-            android:id="@+id/creativeImageView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scaleType="centerCrop" />
+            <ImageView
+                android:id="@+id/creativeImageView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="fitCenter" />
 
-        <VideoView
-            android:id="@+id/creativeVideoView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            <androidx.media3.ui.PlayerView
+                android:id="@+id/video_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:use_controller="false" />
 
-    </FrameLayout>
 
-    <!--
-    <ImageView
-        android:id="@+id/qrCodeImageView"
-        android:layout_width="160dp"
-        android:layout_height="136dp"
-        android:layout_marginBottom="48dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@id/rightGuideline"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="@+id/newVerticalGuideline" />
--->
+        </FrameLayout>
 
     <TextView
         android:id="@+id/offerCodeTextView"
@@ -92,85 +81,70 @@
         android:layout_marginTop="16dp"
         android:textSize="24sp"
         android:textStyle="bold"
-        app:layout_constraintTop_toBottomOf="@+id/ctaTextView"
+        app:layout_constraintEnd_toEndOf="@+id/ctaTextView"
         app:layout_constraintStart_toStartOf="@+id/ctaTextView"
-        app:layout_constraintEnd_toEndOf="@+id/ctaTextView" />
+        app:layout_constraintTop_toBottomOf="@+id/ctaTextView" />
 
     <TextView
         android:id="@+id/ctaTextView"
         android:layout_width="157dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
         android:layout_marginBottom="12dp"
         android:fontFamily="sans-serif-condensed-medium"
         android:text="@string/cta_text"
         android:textAlignment="center"
         android:textColor="#f5640d"
         android:textSize="24sp"
-        app:layout_constraintTop_toBottomOf="@+id/creativeContainer"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/couponHeaderTextView" />
-    <!--
-   <TextView
-       android:id="@+id/ctaTextView"
-       android:layout_width="157dp"
-       android:layout_height="113dp"
-       android:layout_marginBottom="12dp"
-       android:fontFamily="sans-serif-condensed-medium"
-       android:text="@string/cta_text"
-       android:textAlignment="center"
-       android:textColor="#f5640d"
-       android:textSize="24sp"
-       app:layout_constraintBottom_toTopOf="@id/qrCodeImageView"
-       app:layout_constraintEnd_toEndOf="@id/qrCodeImageView"
-       app:layout_constraintHorizontal_bias="0.0"
-       app:layout_constraintStart_toStartOf="@id/qrCodeImageView" />
-    -->
-   <TextView
-       android:id="@+id/timerTextView"
-       android:layout_width="wrap_content"
-       android:layout_height="wrap_content"
-       android:layout_marginStart="716dp"
-       android:layout_marginTop="1188dp"
-       android:textSize="24sp"
-       app:layout_constraintStart_toStartOf="parent"
-       app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toEndOf="@+id/couponHeaderTextView"
+        app:layout_constraintTop_toBottomOf="@+id/creativeContainer" />
 
-   <TextView
-       android:id="@+id/couponHeaderTextView"
-       android:layout_width="0dp"
-       android:layout_height="wrap_content"
-       android:layout_marginStart="16dp"
-       android:fontFamily="@font/raleway_extrabold"
-       android:padding="16dp"
-       android:textSize="44sp"
-       app:layout_constraintEnd_toEndOf="@id/newVerticalGuideline"
-       app:layout_constraintStart_toStartOf="parent"
-       app:layout_constraintTop_toTopOf="@id/gifBottomGuideline" />
+    <TextView
+        android:id="@+id/timerTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="716dp"
+        android:layout_marginTop="1188dp"
+        android:textSize="24sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
+    <TextView
+        android:id="@+id/couponHeaderTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:fontFamily="@font/raleway_extrabold"
+        android:padding="16dp"
+        android:textSize="44sp"
+        app:layout_constraintEnd_toEndOf="@id/newVerticalGuideline"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/gifBottomGuideline" />
 
-   <TextView
-       android:id="@+id/couponOfferTextView"
-       android:layout_width="0dp"
-       android:layout_height="wrap_content"
-       android:fontFamily="@font/lato"
-       android:padding="8dp"
-       android:textSize="26sp"
-       app:layout_constraintBottom_toTopOf="@id/couponFooterTextView"
-       app:layout_constraintEnd_toEndOf="@id/newVerticalGuideline"
-       app:layout_constraintStart_toStartOf="@+id/leftGuideline"
-       app:layout_constraintTop_toBottomOf="@id/couponHeaderTextView"
-       app:layout_constraintVertical_bias="0.272" />
+    <TextView
+        android:id="@+id/couponOfferTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/lato"
+        android:padding="8dp"
+        android:textSize="26sp"
+        app:layout_constraintBottom_toTopOf="@id/couponFooterTextView"
+        app:layout_constraintEnd_toEndOf="@id/newVerticalGuideline"
+        app:layout_constraintStart_toStartOf="@+id/leftGuideline"
+        app:layout_constraintTop_toBottomOf="@id/couponHeaderTextView"
+        app:layout_constraintVertical_bias="0.272" />
 
-   <TextView
-           android:id="@+id/couponFooterTextView"
-           android:layout_width="match_parent"
-           android:layout_height="wrap_content"
-           android:layout_marginTop="8dp"
-           android:textSize="16sp"
-           app:layout_constraintBottom_toBottomOf="parent"
-           app:layout_constraintStart_toStartOf="parent"
-           android:layout_marginStart="16dp"
-           app:layout_constraintEnd_toEndOf="@id/newVerticalGuideline"
-           android:padding="8dp"/>
+    <TextView
+        android:id="@+id/couponFooterTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:padding="8dp"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/newVerticalGuideline"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

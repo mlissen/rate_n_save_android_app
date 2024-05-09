@@ -4,5 +4,5 @@
     <string name="QR_code">Scan in the Costco app to automatically
         apply at purchase or take a picture to show at the register. </string>
     <string name="title_activity_home">Home Screen</string>
-    <string name="cta_text">Take a picture and mention the coupon code at the register!</string>
+    <string name="cta_text">Mention the coupon code at the register!</string>
 </resources>
