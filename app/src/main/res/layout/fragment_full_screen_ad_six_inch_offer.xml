@@ -1,0 +1,62 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <Button
+        android:id="@+id/backButton"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:background="@android:color/transparent"
+        android:layout_gravity="top|start"
+        android:visibility="invisible" />
+
+    <!-- ImageView for displaying images -->
+    <ImageView
+        android:id="@+id/creativeImageView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="fitCenter"
+        android:visibility="gone" />
+
+    <!-- PlayerView for displaying videos -->
+    <androidx.media3.ui.PlayerView
+        android:id="@+id/video_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:use_controller="false"
+        android:visibility="gone" />
+
+    <!-- QR code container with text above -->
+    <FrameLayout
+        android:id="@+id/qrCodeContainer"
+        android:layout_width="120dp"
+        android:layout_height="150dp"
+        android:layout_gravity="end|bottom"
+        android:layout_margin="16dp"
+        android:background="@android:color/white"
+        android:padding="8dp">
+
+        <!-- Text above QR code -->
+        <TextView
+            android:id="@+id/qrCodeText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Scan in the SproutMart app"
+            android:textSize="14sp"
+            android:textAlignment="center"
+            android:textColor="@android:color/black"
+            android:layout_marginBottom="8dp" />
+
+        <!-- ImageView for QR code -->
+        <ImageView
+            android:id="@+id/qrCodeImageView"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_gravity="bottom"
+            android:scaleType="centerInside"
+            android:contentDescription="@string/qr_code" />
+
+    </FrameLayout>
+
+</FrameLayout>

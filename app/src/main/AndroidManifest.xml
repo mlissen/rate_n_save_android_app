@@ -14,7 +14,7 @@
         android:theme="@style/AppTheme"
         tools:targetApi="31">
 
-        <!-- Declaration of com.example.ratensaveandroidapp.HomeActivity -->
+        <!-- Declaration of HomeActivity -->
         <activity
             android:name=".HomeActivity"
             android:exported="true"
@@ -25,17 +25,25 @@
             </intent-filter>
         </activity>
 
-        <!-- Declaration of MidAisleMedium -->
-        <activity android:name=".MidAisleMediumActivity"
+        <!-- Declaration of MidAisleMediumActivity -->
+        <activity
+            android:name=".MidAisleMediumActivity"
             android:exported="true">
         </activity>
 
-        <!-- Declaration of QrCodeActivity -->
+        <!-- Declaration of QRCodeActivity -->
         <activity
             android:name=".QRCodeActivity"
             android:exported="false">
-            <!-- No intent-filter needed unless this is an entry point to the app -->
         </activity>
+
+        <!-- Declaration of AdDisplayActivity -->
+        <activity
+            android:name=".AdDisplayActivity"
+            android:exported="true"
+            android:screenOrientation="portrait"> <!-- Added attribute -->
+        </activity>
+
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />

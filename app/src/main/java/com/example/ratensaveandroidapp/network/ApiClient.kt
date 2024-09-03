@@ -8,7 +8,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 class ApiClient {
     companion object {
         const val RATING_BASE_URL = "https://b5d1dtjncd.execute-api.us-east-2.amazonaws.com/dev/"
-        const val AUCTION_BASE_URL = "https://2ykhuinjv0.execute-api.us-west-2.amazonaws.com/Dev/"
+        const val AUCTION_BASE_URL = "https://al53z0qnrj.execute-api.us-west-2.amazonaws.com/production/"
         // Add more BASE_URL constants as new microservices come online
 
         val loggingInterceptor = HttpLoggingInterceptor().apply {

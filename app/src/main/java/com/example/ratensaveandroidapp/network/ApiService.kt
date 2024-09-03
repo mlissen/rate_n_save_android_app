@@ -12,7 +12,7 @@ import retrofit2.http.POST
         @POST("submit-rating") // URL is relative to the specific Retrofit baseURL
         suspend fun submitRating(@Body ratingRequest: RatingRequest): CouponResponse
 
-        @POST("auction")
+        @POST("auctions")
         suspend fun startAuction(@Body auctionRequest: AuctionRequest): AdResponse
     }
 
