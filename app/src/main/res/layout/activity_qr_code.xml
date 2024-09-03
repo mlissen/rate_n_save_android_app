@@ -8,7 +8,7 @@
         android:id="@+id/headerTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/QR_code"
+        android:text="@string/qr_code"
         android:layout_centerHorizontal="true"
         android:textSize="50sp"
         android:layout_marginTop="75dp"
