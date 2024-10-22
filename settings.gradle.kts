@@ -12,10 +12,13 @@ pluginManagement {
     }
 }
 dependencyResolutionManagement {
-    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositoriesMode.set(RepositoriesMode.PREFER_SETTINGS)
+
     repositories {
         google()
         mavenCentral()
+        // Add any additional repositories here if needed
+        maven { url = uri("https://jitpack.io") } // Example for JitPack
     }
 }
 

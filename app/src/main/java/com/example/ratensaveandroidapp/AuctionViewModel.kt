@@ -1,4 +1,4 @@
-package com.example.ratensaveandroidapp.viewmodel
+package com.example.ratensaveandroidapp
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -12,27 +12,28 @@ import kotlinx.coroutines.launch
 import android.util.Log
 
 class AuctionViewModel : ViewModel() {
-
-    // Initialize couponResponse to null or a default value
     private val repository = AuctionRepository()
 
     private val _adResponse = MutableLiveData<AdResponse>()
     val adResponse: LiveData<AdResponse> = _adResponse
 
-    fun startAuction(placementId: String) {
+    fun startAuction(placementId: String, storeTimezone: String) {
         viewModelScope.launch(Dispatchers.IO) {
             Log.d("AuctionViewModel", "About to initiate auction call with placementId: $placementId")
             try {
-                val auctionRequest = AuctionRequest(placementId)
-                val adResponse = repository.startAuction(auctionRequest)
-                _adResponse.postValue(adResponse)
-                Log.d("AuctionViewModel", "API response posted to LiveData, response: $adResponse") // Log success
-                Log.d("AuctionViewModel", "LISS creativeUrl: ${adResponse.creativeUrl}")
+                val auctionRequest = AuctionRequest(placementId, storeTimezone)
+                val response = repository.startAuction(auctionRequest)
+                Log.d("AuctionViewModel", "Received response from repository: $response")
+                _adResponse.postValue(response)
+                Log.d("AuctionViewModel", "Posted response to LiveData")
+                Log.d("AuctionViewModel", "LISS creativeUrl: ${response.creativeUrl}")
             } catch (e: Exception) {
-                Log.e("AuctionViewModel", "Error in startAuction, response not posted to LiveData", e) // Log error
-                // Optionally, you could post a failure response or a specific error message to LiveData here
+                Log.e("AuctionViewModel", "Error in startAuction: ${e.javaClass.simpleName}", e)
+                Log.e("AuctionViewModel", "Error message: ${e.message}")
+                Log.e("AuctionViewModel", "Stack trace: ${e.stackTraceToString()}")
+                // Optionally post an error state to LiveData
+                // _adResponse.postValue(AdResponse.Error(e.message ?: "Unknown error occurred"))
             }
         }
     }
 }
-

@@ -33,6 +33,9 @@ android {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
+    lint {
+        baseline = file("lint-baseline.xml")
+    }
     kotlinOptions {
         jvmTarget = "1.8"
     }
@@ -51,7 +54,23 @@ android {
 }
 
 dependencies {
+    // ExoPlayer (Media3) core
+    implementation("androidx.media3:media3-exoplayer:1.3.1")
+
+    // ExoPlayer UI components
+    implementation("androidx.media3:media3-ui:1.3.1")
+
+    // Media3 Common Utilities (for UnstableApi)
+    implementation("androidx.media3:media3-common:1.3.1")
+
+    // Additional Media3 dependencies if needed
+    implementation("androidx.media3:media3-exoplayer-dash:1.3.1")
+    implementation("androidx.media3:media3-datasource:1.3.1")
+
+    // Media3 Common Utilities (for UnstableApi)
+    implementation ("androidx.media3:media3-common:1.1.0")
     implementation("androidx.work:work-runtime-ktx:2.9.0")
+    implementation("com.google.zxing:core:3.4.1")
     implementation("com.google.android.material:material:1.9.0")
     implementation("androidx.security:security-crypto:1.1.0-alpha06")
     implementation("com.github.bumptech.glide:glide:4.12.0")

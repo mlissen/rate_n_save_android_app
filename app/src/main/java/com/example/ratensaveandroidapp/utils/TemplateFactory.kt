@@ -12,6 +12,7 @@ object TemplateFactory {
                 2 -> FullScreenAdFragmentFor6InchNoOffer()
                 3 -> HeaderAndBodyWithOffer6InchFragment()
                 4 -> FullScreenAdFragmentFor6InchWithOffer()
+                5 -> SpinWheelFragment()
                 else -> DefaultAdFragment()
             }
             else -> DefaultAdFragment()

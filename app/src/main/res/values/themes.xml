@@ -6,22 +6,21 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <!-- Customize your theme here. -->
+        <!-- Fullscreen properties -->
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <!-- Set window background to white -->
+        <item name="android:windowBackground">@android:color/white</item>
     </style>
 
     <!-- Theme for the first page with full-screen and emojis. -->
     <style name="EmojiTheme" parent="AppTheme">
-        <item name="android:windowNoTitle">true</item>
-        <item name="android:windowFullscreen">true</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
-        <item name="android:windowContentOverlay">@null</item>
     </style>
 
     <!-- Theme for the second page with QR code and a 'Done' button. -->
     <style name="QRCodeTheme" parent="AppTheme">
-        <item name="android:windowBackground">@color/white</item>
-        <!-- If you want to hide the action bar for this page too, uncomment the next line -->
-        <item name="android:windowNoTitle">true</item>
         <item name="android:buttonStyle">@style/DoneButtonStyle</item>
     </style>
 

@@ -42,7 +42,7 @@
             android:id="@+id/qrCodeText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Scan in the SproutMart app"
+            android:text="Scan in our app"
             android:textSize="14sp"
             android:textAlignment="center"
             android:textColor="@android:color/black"

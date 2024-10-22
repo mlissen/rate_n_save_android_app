@@ -9,18 +9,21 @@ import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.example.ratensaveandroidapp.datamodel.AdResponse
-import com.example.ratensaveandroidapp.viewmodel.AuctionViewModel
 import android.view.View
 import android.view.WindowInsets
 import android.view.WindowInsetsController
+import java.util.TimeZone
 
 class HomeActivity : AppCompatActivity() {
     private lateinit var viewModel: AuctionViewModel
     private lateinit var etPlacementId: EditText
+    val storeTimezone = TimeZone.getDefault().id // e.g., "America/Los_Angeles"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.home_screen)
+
+        val storeTimezone = intent.getStringExtra("storeTimezone")
 
         hideSystemUI() // Add this line to hide system UI
 
@@ -65,9 +68,11 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun startAuction(placementId: String) {
-        viewModel.startAuction(placementId)
-        Log.d("HomeActivity", "Advertising started for placement ID: $placementId")
+        val storeTimezone = TimeZone.getDefault().id
+        viewModel.startAuction(placementId, storeTimezone)
+        Log.d("HomeActivity", "Auction started for placement ID: $placementId with timezone: $storeTimezone")
     }
+
 
     private fun storePlacementId(placementId: String) {
         val sharedPref = getSharedPreferences("AppSettings", Context.MODE_PRIVATE)
@@ -80,12 +85,16 @@ class HomeActivity : AppCompatActivity() {
     private fun navigateToAdActivity(placementTypeId: Int, templateId: Int, adResponse: AdResponse) {
         Log.d("HomeActivity", "Navigating with placementTypeId: $placementTypeId, templateId: $templateId")
 
+        val storeTimezone = TimeZone.getDefault().id  // Get the device's timezone
+
         val intent = Intent(this, AdDisplayActivity::class.java).apply {
             putExtra("placementTypeId", placementTypeId)
             putExtra("templateId", templateId)
             putExtra("adResponse", adResponse)
+            putExtra("storeTimezone", storeTimezone)  // Pass the timezone to AdDisplayActivity
         }
 
         startActivity(intent)
     }
+
 }
